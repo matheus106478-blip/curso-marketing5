@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso Completo de Marketing Digital - Aulas</title>
+    <link rel="stylesheet" href="style.css"> 
+    
+    <style>
+        /* Estilos de Feedback Visual (Correta/Incorreta) */
+        .questao .correta {
+            background-color: #e6f6e6 !important; /* Verde suave */
+            border: 1px solid #28a745 !important;
+            color: #155724;
+            font-weight: bold;
+        }
+        .questao .incorreta {
+            background-color: #f8d7da !important; /* Vermelho suave */
+            border: 1px solid #e63946 !important;
+            color: #721c24;
+            font-weight: bold;
+        }
+
+        /* Estilos para Modo Noturno */
+        .dark-mode .questao .correta {
+            background-color: #24482b !important;
+            border: 1px solid #4caf50 !important;
+            color: #c8e6c9;
+        }
+        .dark-mode .questao .incorreta {
+            background-color: #58242a !important;
+            border: 1px solid #e63946 !important;
+            color: #f8d7da;
+        }
+        
+        .btn-verificar-resposta {
+            margin: 5px 0 20px 0;
+            padding: 8px 15px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff; /* Azul padrão */
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .btn-verificar-resposta:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+        .btn-verificar-resposta:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .teste-box .questao {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* Estilo para botões do header */
+        .btn-header {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-header.btn-inscricao {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-header.btn-inscricao:hover {
+            background-color: #1e7e34;
+        }
+
+        .btn-header.btn-voltar-acesso {
+            background-color: #6c757d; /* Cinza */
+            color: white;
+        }
+        .btn-header.btn-voltar-acesso:hover {
+            background-color: #5a6268;
+        }
+
+        .info-adicional {
+             font-size: 0.8rem;
+             margin-top: 10px;
+        }
+        .info-adicional span {
+             display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button class="btn-header btn-voltar-topo" onclick="irParaAula(1)">← Início</button>
+        <button class="btn-header btn-voltar-acesso" id="btnVoltarAcesso" onclick="voltarParaAcesso()" style="display: none;">Voltar para Acesso</button>
+        
+        <h1>Curso Completo de Marketing Digital</h1>
+        <p id="headerInfo" style="font-size:0.9rem; margin-left:10px;">Aprenda a criar sua presença digital</p>
+        
+        <button class="btn-header btn-inscricao" id="btnCertInscricao" onclick="mostrarCertificadoInscricao()" style="display: none;">Ver Certificado de Inscrição</button>
+        <button class="btn-header btn-dark-mode" id="darkModeToggle" onclick="toggleDarkMode()">Modo Noturno 🌙</button>
+    </header>
+
+    <div id="container">
+        <aside id="sidebar" style="display: none;">
+            <div class="modulo-title modulo-1">MÓDULO 1: Fundamentos (Básico)</div>
+            <div class="modulo-title modulo-2">MÓDULO 2: Intermediário</div>
+            <div class="modulo-title modulo-3">MÓDULO 3: Avançado</div>
+        </aside>
+
+        <main id="mainContent">
+            <div id="telaInscricao" class="aula-content" style="max-width: 450px; margin: 50px auto; text-align: center; border: 1px solid var(--link-hover-bg); padding: 30px; border-radius: 8px;">
+                <h2>Acesso e Inscrição</h2>
+                <p id="mensagemInscricao">Preencha seus dados para salvar seu progresso e acessar o certificado de inscrição.</p>
+                <form id="formInscricao" onsubmit="iniciarOuAcessar(event)">
+                    <input type="text" id="alunoNome" placeholder="Seu Nome Completo" required 
+                           style="width: 100%; padding: 12px; margin: 10px 0; border: 1px solid var(--muted); border-radius: 5px; font-size: 1rem;">
+                    <input type="email" id="alunoEmail" placeholder="Seu Melhor E-mail (Identificador do Progresso)" required 
+                           style="width: 100%; padding: 12px; margin: 10px 0 10px 0; border: 1px solid var(--muted); border-radius: 5px; font-size: 1rem;">
+                    <input type="text" id="alunoCPF" placeholder="Seu CPF (Somente números)" required 
+                           pattern="[0-9]{11}" title="O CPF deve conter 11 dígitos numéricos."
+                           style="width: 100%; padding: 12px; margin: 10px 0 20px 0; border: 1px solid var(--muted); border-radius: 5px; font-size: 1rem;">
+                    <button type="submit" class="btn" style="width: 100%;" id="btnAcessarCurso">Me Inscrever e Começar o Curso</button>
+                </form>
+                <p style="margin-top: 15px; font-size: 0.9rem; color: var(--muted);">
+                    Se você já se inscreveu, use o mesmo Nome, E-mail e CPF para continuar de onde parou.
+                </p>
+            </div>
+
+            <div id="aulaConteudo" class="aula-content" style="display: none;">
+                <h2>Bem-vindo ao Curso!</h2>
+                <p>O conteúdo será carregado aqui.</p>
+            </div>
+            
+            <div id="navBotoes" style="display: none;">
+                <button id="btnAnterior" class="btn" onclick="irParaAulaAnterior()">Aula Anterior</button>
+                <button id="btnProximo" class="btn" onclick="irParaProximaAula()">Próxima Aula</button>
+            </div>
+        </main>
+    </div>
+
+
+    <div id="certificadoInscricaoPopup" class="popup-bg" style="display: none;">
+        <div class="certificado-inscricao" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="fecharCertificadoInscricao()">X</button>
+            <h2>CERTIFICADO DE INSCRIÇÃO</h2>
+            <h1>Curso de Marketing Digital</h1>
+            <p style="margin-top: 20px;">Este documento certifica a inscrição de:</p>
+            <h3 id="certificadoInscricaoNome">NOME DO ALUNO</h3>
+            <p>E-mail: <span id="certificadoInscricaoEmail">EMAIL DO ALUNO</span></p>
+            <p>CPF: <span id="certificadoInscricaoCPF">CPF DO ALUNO</span></p>
+            <p style="margin-top: 10px;">no curso online de Marketing Digital, realizada em <span id="certificadoInscricaoData">Data</span>.</p>
+            <p class="info-adicional">Matrícula: <span id="certificadoInscricaoMatricula">NUMERO MATRÍCULA</span></p>
+            <button class="btn" style="margin-top: 20px;" onclick="fecharCertificadoInscricao()">Ir para as Aulas</button>
+        </div>
+    </div>
+
+    <div id="certificadoConclusaoPopup" class="popup-bg" style="display: none;">
+        <div class="certificado-conclusao" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="fecharCertificadoConclusao()">X</button>
+            <div class="coroa">★</div>
+            <h2>CERTIFICADO DE CONCLUSÃO</h2>
+            <h1>Marketing Digital</h1>
+            <p class="texto-principal">Certificamos que</p>
+            <h3 id="certificadoConclusaoNome">NOME DO ALUNO</h3>
+            <p class="texto-principal">concluiu com êxito o **Curso Completo de Marketing Digital**, com um total de 40 horas e</p>
+            <p id="percentualAprovacao">aprovação final com **0%** de acerto.</p>
+
+            <div class="info-aluno">
+                <span>E-mail: <span id="certificadoConclusaoEmail">EMAIL DO ALUNO</span></span>
+                <span>CPF: <span id="certificadoConclusaoCPF">CPF DO ALUNO</span></span>
+                <span>Matrícula: <span id="certificadoConclusaoMatricula">NUMERO MATRÍCULA</span></span>
+                <span>Data: <span id="certificadoConclusaoData">São Paulo, 17 de Outubro de 2025</span></span>
+            </div>
+
+            <div class="assinaturas">
+                <div class="assinatura-box">
+                    <img src="assinatura_aluno.png" alt="Assinatura do Aluno">
+                    <hr>
+                    <p>Assinatura do Aluno</p>
+                </div>
+                <div class="assinatura-box">
+                    <img src="assinatura_diretor.png" alt="Assinatura da Direção do Curso">
+                    <hr>
+                    <p>Direção do Curso</p>
+                </div>
+            </div>
+
+            <div class="qrcode-area">
+                QR Code<br>de<br>Validação
+            </div>
+            
+            <button id="btnDownloadPDF" class="btn" style="margin-top: 30px;" onclick="downloadCertificadoPDF()">Baixar Certificado (PDF)</button>
+        </div>
+    </div>
+
+
+    <script>
+        // **********************************************
+        // 1. DADOS DAS AULAS E CONTEÚDO (CONTEÚDO RESTAURADO)
+        // **********************************************
+        const aulas = {
+            // MÓDULO 1: FUNDAMENTOS
+            1: { modulo: 1, titulo: "Aula 1 — Introdução, objetivos, conceitos básicos", 
+                conteudo: `
+                    <h2>Introdução, objetivos, conceitos básicos</h2>
+                    <p>Nesse módulo vamos aprender o que é Marketing Digital, seus objetivos e conceitos principais.</p>
+                    <p>O Marketing Digital é a prática de divulgar produtos, serviços ou ideias usando a internet e tecnologias digitais. Ele permite alcançar pessoas de forma segmentada, ou seja, o público certo, no momento certo, gastando menos recursos e conseguindo resultados que podem ser medidos com precisão. Diferente do marketing tradicional, ele permite interação direta com o público, análise em tempo real e ajustes rápidos em campanhas.</p>
+                    <h3>Conceitos importantes:</h3>
+                    <ul>
+                        <li><strong>Marketing Digital:</strong> Conjunto de estratégias que utilizam canais digitais para promover produtos ou serviços.</li>
+                        <li><strong>Público-alvo:</strong> Grupo de pessoas que possuem interesse no produto ou serviço, definidas por características como idade, região, comportamento e interesses.</li>
+                        <li><strong>Objetivos de uma campanha:</strong> Pode ser gerar vendas, captar contatos (leads), aumentar engajamento, fortalecer a marca ou educar o público.</li>
+                    </ul>
+                    <h3>Dicas e alertas:</h3>
+                    <ul>
+                        <li>Sempre defina objetivos claros antes de começar qualquer campanha. Sem objetivo definido, fica difícil medir resultados.</li>
+                        <li>Evite tentar atingir todos os públicos ao mesmo tempo; foque em quem tem mais chance de se interessar pelo seu produto.</li>
+                    </ul>
+                    <h3>Exemplo prático:</h3>
+                    <p>Uma pequena padaria cria uma página no Instagram mostrando fotos de bolos e pães frescos, vídeos curtos do processo de produção e postagens de receitas. Ao postar diariamente, consegue atrair clientes próximos e aumentar as vendas do dia a dia.</p>
+                `
+            },
+            2: { modulo: 1, titulo: "Aula 2 — Terminologias, histórico, importância", 
+                conteudo: `
+                    <h2>Terminologias, histórico, importância</h2>
+                    <p>Nesse módulo vamos conhecer os termos mais usados no Marketing Digital, entender sua história e compreender sua importância para negócios de qualquer tamanho.</p>
+                    <h3>Terminologias básicas:</h3>
+                    <ul>
+                        <li><strong>SEO (Search Engine Optimization):</strong> Conjunto de técnicas que ajudam sites e conteúdos a aparecerem melhor em buscadores, como o Google.</li>
+                        <li><strong>Lead:</strong> Pessoa que demonstra interesse em um produto ou serviço e fornece algum contato, como e-mail ou telefone.</li>
+                        <li><strong>Funil de vendas:</strong> Representa o caminho que o cliente percorre desde descobrir o produto até decidir pela compra.</li>
+                        <li><strong>Landing Page:</strong> Página criada com foco em conversão, geralmente para capturar leads ou vender produtos.</li>
+                        <li><strong>Call to Action (CTA):</strong> Chamada para ação, como “Compre agora” ou “Cadastre-se”.</li>
+                    </ul>
+                    <h3>Histórico:</h3>
+                    <p>O Marketing Digital começou a se desenvolver com a popularização da internet nos anos 90. Inicialmente, empresas usavam sites simples e e-mails para divulgação. Com o avanço da tecnologia, surgiram redes sociais, anúncios pagos, automação e análise de dados, tornando o Marketing Digital uma ferramenta essencial para qualquer negócio moderno.</p>
+                    <h3>Importância:</h3>
+                    <ul>
+                        <li>Permite atingir um público mais amplo de forma segmentada.</li>
+                        <li>Reduz custos em comparação com marketing tradicional.</li>
+                        <li>Oferece métricas precisas para medir desempenho.</li>
+                        <li>Permite ajustar campanhas em tempo real.</li>
+                    </ul>
+                    <h3>Exemplo prático:</h3>
+                    <p>Uma loja de roupas que publica posts no Facebook, cria artigos no blog com dicas de moda e usa SEO para ser encontrada no Google consegue atrair clientes sem precisar gastar muito em anúncios pagos.</p>
+                `
+            },
+            3: { modulo: 1, titulo: "Aula 3 — Estruturas, exemplos, aplicações", 
+                conteudo: `
+                    <h2>Estruturas, exemplos, aplicações</h2>
+                    <p>Nesse módulo vamos aprender sobre as estruturas de campanhas de Marketing Digital e como aplicá-las de forma prática.</p>
+                    <h3>Estruturas principais:</h3>
+                    <ul>
+                        <li><strong>Topo do Funil (ToFu):</strong> Conteúdos que atraem a atenção do público, geralmente educativos ou informativos.</li>
+                        <li><strong>Meio do Funil (MoFu):</strong> Conteúdos que ajudam o cliente a considerar a compra, como comparações, análises e tutoriais.</li>
+                        <li><strong>Fundo do Funil (BoFu):</strong> Conteúdos e ofertas que incentivam a compra, como descontos ou promoções limitadas.</li>
+                    </ul>
+                    <h3>Dicas:</h3>
+                    <ul>
+                        <li>Sempre alinhe conteúdo e estratégia de funil com a persona (cliente ideal).</li>
+                        <li>Não pule etapas do funil; cada fase é importante para educar e preparar o cliente.</li>
+                    </ul>
+                    <h3>Exemplo prático:</h3>
+                    <p>Uma empresa de cursos online cria vídeos gratuitos sobre dicas de estudo (topo), envia e-mails explicando comparativos entre cursos (meio) e oferece descontos especiais para matrículas (fundo).</p>
+                `
+            },
+            4: { modulo: 1, titulo: "Aula 4 — Estratégias, técnicas, ferramentas", 
+                conteudo: `
+                    <h2>Estratégias, técnicas, ferramentas</h2>
+                    <p>Nesse módulo vamos aprender estratégias, técnicas e ferramentas essenciais para criar campanhas digitais de sucesso.</p>
+                    <h3>Estratégias e técnicas:</h3>
+                    <ul>
+                        <li><strong>Marketing de Conteúdo:</strong> Criar posts, artigos, vídeos ou tutoriais que informam, ensinam ou divertem o público.</li>
+                        <li><strong>E-mail Marketing:</strong> Enviar mensagens personalizadas para leads e clientes com informações, ofertas ou novidades.</li>
+                        <li><strong>Redes Sociais:</strong> Usar Instagram, Facebook, TikTok e YouTube para engajar o público e fortalecer a marca.</li>
+                        <li><strong>Anúncios pagos:</strong> Plataformas como Google Ads e Meta Ads permitem alcançar pessoas segmentadas com publicidade direcionada.</li>
+                    </ul>
+                    <h3>Ferramentas úteis:</h3>
+                    <ul>
+                        <li><strong>Canva:</strong> Criar imagens, posts e apresentações visualmente atrativas.</li>
+                        <li><strong>Mailchimp:</strong> Automatizar envio de e-mails e organizar listas de contatos.</li>
+                        <li><strong>Google Analytics:</strong> Acompanhar métricas e entender o comportamento do público no site.</li>
+                    </ul>
+                    <h3>Exemplo prático:</h3>
+                    <p>Um e-commerce cria posts no Instagram, envia e-mails com promoções e analisa resultados pelo Google Analytics para descobrir quais ações geram mais vendas.</p>
+                `
+            },
+            5: { modulo: 1, titulo: "Aula 5 — Revisão, casos práticos, dicas", 
+                conteudo: `
+                    <h2>Revisão, casos práticos, dicas</h2>
+                    <p>Nesse módulo vamos revisar todo o conteúdo do Módulo 1 e reforçar os pontos mais importantes.</p>
+                    <h3>Resumo das aulas:</h3>
+                    <ul>
+                        <li>Marketing Digital é a promoção online de produtos e serviços.</li>
+                        <li>Conhecer termos como SEO, funil de vendas, persona e lead é essencial.</li>
+                        <li>Estruturar o funil ajuda a organizar estratégias.</li>
+                        <li>Redes sociais, e-mail e anúncios pagos são os principais canais de atuação.</li>
+                    </ul>
+                    <h3>Dicas práticas:</h3>
+                    <ul>
+                        <li>Planejar antes de criar qualquer conteúdo.</li>
+                        <li>Medir e analisar resultados constantemente.</li>
+                        <li>Produzir conteúdo que seja útil ou divertido para o público.</li>
+                    </ul>
+                    <h3>Exemplo prático:</h3>
+                    <p>Uma empresa organiza posts semanais, envia e-mails segmentados e acompanha métricas para entender o que funciona e melhorar resultados.</p>
+                    <p>Quando estiver pronto, clique no botão abaixo para ir para o Teste Final do Módulo 1.</p>
+                `
+            },
+            6: { modulo: 1, titulo: "Teste do Módulo 1 – Fundamentos", 
+                isTeste: true,
+                conteudo: `
+                    <div class="teste-box" id="testeM1">
+                        <h2>Teste Final - Módulo 1</h2>
+                        <p>Responda às 10 perguntas abaixo. Você precisa de 6 acertos para aprovação.</p>
+                        
+                        <div class="questao" data-questao="1">
+                            <h3>1. Explique o que é Marketing Digital e como ele difere do marketing tradicional.</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q1" value="correta"> A) Estratégia online que permite medir resultados e ajustar campanhas.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q1" value="errada"> B) Apenas postar nas redes sociais sem planejamento.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q1" value="errada"> C) Marketing offline adaptado para internet.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(1)">Verificar Resposta</button>
+                        </div>
+                        
+                        <div class="questao" data-questao="2">
+                            <h3>2. Defina “público-alvo” e explique sua importância em uma campanha.</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q2" value="correta"> A) Grupo de pessoas interessadas no produto ou serviço.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q2" value="errada"> B) Qualquer pessoa que veja a campanha.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q2" value="errada"> C) Apenas clientes antigos.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(2)">Verificar Resposta</button>
+                        </div>
+                        
+                        <div class="questao" data-questao="3">
+                            <h3>3. Explique a função do SEO em campanhas digitais.</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q3" value="correta"> A) Melhorar a posição de sites e conteúdos nos buscadores.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q3" value="errada"> B) Criar anúncios pagos em redes sociais.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q3" value="errada"> C) Medir resultados de vendas.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(3)">Verificar Resposta</button>
+                        </div>
+                        
+                        <div class="questao" data-questao="4">
+                            <h3>4. Descreva o funil de vendas e suas etapas.</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q4" value="correta"> A) Caminho do cliente da descoberta à compra: topo, meio e fundo.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q4" value="errada"> B) Lista de produtos da empresa.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q4" value="errada"> C) Sequência de anúncios pagos sem planejamento.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(4)">Verificar Resposta</button>
+                        </div>
+                        
+                        <div class="questao" data-questao="5">
+                            <h3>5. Qual a função do marketing de conteúdo?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q5" value="correta"> A) Atrair, informar e engajar o público de forma natural.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q5" value="errada"> B) Criar textos longos sem foco em resultados.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q5" value="errada"> C) Substituir anúncios pagos.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(5)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="6">
+                            <h3>6. Explique como o e-mail marketing contribui para campanhas.</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q6" value="correta"> A) Comunicação direta, personalizando mensagens e ofertas.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q6" value="errada"> B) Envio genérico de mensagens.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q6" value="errada"> C) Criar boletins sem objetivo comercial.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(6)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="7">
+                            <h3>7. Qual a importância das redes sociais no Marketing Digital?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q7" value="correta"> A) Engajar clientes e fortalecer a marca.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q7" value="errada"> B) Apenas exibir produtos sem interação.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q7" value="errada"> C) Substituir sites e blogs.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(7)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="8">
+                            <h3>8. Cite ferramentas que ajudam a criar campanhas eficientes.</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q8" value="correta"> A) Canva, Mailchimp, Google Analytics, Ads.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q8" value="errada"> B) Apenas planilhas.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q8" value="errada"> C) Software de edição de vídeo sem análise.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(8)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="9">
+                            <h3>9. Como um pequeno negócio aplica Marketing Digital com baixo orçamento?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q9" value="correta"> A) Conteúdo gratuito, redes sociais e monitoramento de métricas.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q9" value="errada"> B) Comprar anúncios pagos sem planejamento.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q9" value="errada"> C) Esperar que clientes encontrem a empresa.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(9)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="10">
+                            <h3>10. Por que analisar métricas é essencial?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q10" value="correta"> A) Melhorar resultados e tomar decisões estratégicas.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q10" value="errada"> B) Apenas preencher relatórios.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q10" value="errada"> C) Não é necessário se a campanha estiver online.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(10)">Verificar Resposta</button>
+                        </div>
+
+                        <button id="btnFinalizarTesteM1" class="btn" onclick="finalizarTeste(1, 10, 6)" disabled>Finalizar Teste</button>
+                    </div>
+                `
+            },
+
+            // MÓDULO 2: INTERMEDIÁRIO
+            7: { modulo: 2, titulo: "Aula 1 — Conceitos avançados, aprofundamento", 
+                conteudo: `
+                    <h2>Conceitos avançados, aprofundamento</h2>
+                    <p>Nesse módulo vamos aprender conceitos mais avançados do Marketing Digital, aprofundando a compreensão de segmentação de público, funis detalhados e indicadores de desempenho (KPIs).</p>
+                    <h3>Segmentação de público:</h3>
+                    <p>Segmentar significa dividir o público em grupos menores com características semelhantes (idade, interesses, localização, comportamento online). Isso ajuda a criar mensagens mais relevantes.</p>
+                    <h3>Persona:</h3>
+                    <p>Persona é a representação do cliente ideal, detalhando idade, hábitos, interesses e necessidades. Diferente do público-alvo, que é mais genérico, a persona permite criar campanhas muito mais personalizadas.</p>
+                    <h3>Jornada do cliente:</h3>
+                    <p>A jornada do cliente representa as etapas que ele percorre até realizar a compra: conscientização, consideração e decisão. Entender essa jornada permite entregar o conteúdo certo no momento certo.</p>
+                    <h3>KPIs (Key Performance Indicators):</h3>
+                    <p>Indicadores de desempenho medem se os objetivos da campanha estão sendo alcançados. Exemplos: taxa de conversão, alcance de publicações, cliques em links, taxa de abertura de e-mails.</p>
+                    <h3>Exemplo prático:</h3>
+                    <p>Uma loja de calçados cria três personas: jovens que compram tênis, adultos que compram sapatos sociais e idosos que compram calçados confortáveis. Para cada grupo, a loja envia campanhas personalizadas, aumentando as chances de venda.</p>
+                    <h3>Dicas e alertas:</h3>
+                    <ul>
+                        <li>Não confundir público-alvo com persona; persona é muito mais detalhada.</li>
+                        <li>Sempre acompanhar KPIs para tomar decisões informadas.</li>
+                    </ul>
+                `
+            },
+            8: { modulo: 2, titulo: "Aula 2 — Métodos, procedimentos, exemplos", 
+                conteudo: `
+                    <h2>Métodos, procedimentos, exemplos</h2>
+                    <p>Nesse módulo vamos aprender métodos para planejar, executar e avaliar campanhas intermediárias.</p>
+                    <h3>Passo a passo de planejamento:</h3>
+                    <ul>
+                        <li><strong>Definir público e objetivos:</strong> Saiba exatamente quem deseja atingir e qual ação quer gerar (venda, cadastro, engajamento).</li>
+                        <li><strong>Escolher canais:</strong> Redes sociais, blog, e-mail ou anúncios pagos, conforme comportamento da persona.</li>
+                        <li><strong>Criar conteúdo adequado:</strong> Informativo, educativo ou promocional, conforme etapa do funil.</li>
+                        <li><strong>Integrar canais:</strong> Certifique-se de que redes sociais, blog e e-mail funcionem juntos, reforçando a mensagem.</li>
+                        <li><strong>Mensurar resultados:</strong> Analise KPIs para entender desempenho e ajustar estratégias.</li>
+                    </ul>
+                    <h3>Exemplo prático:</h3>
+                    <p>Uma escola online segmenta alunos por idade e interesse: envia posts educativos no Instagram para jovens, e-mails com dicas de estudo para adultos, e usa anúncios pagos segmentados para aumentar matrículas.</p>
+                    <h3>Dicas e alertas:</h3>
+                    <ul>
+                        <li>Evite criar conteúdo genérico que não atenda a persona.</li>
+                        <li>Integração de canais aumenta eficiência e engajamento.</li>
+                    </ul>
+                `
+            },
+            9: { modulo: 2, titulo: "Aula 3 — Exercícios práticos, resolução de problemas", 
+                conteudo: `
+                    <h2>Exercícios práticos, resolução de problemas</h2>
+                    <p>Nesse módulo vamos praticar a criação de funis intermediários e resolver problemas comuns.</p>
+                    <h3>Exercícios sugeridos:</h3>
+                    <ul>
+                        <li>Criar um funil completo para um negócio fictício, incluindo topo, meio e fundo.</li>
+                        <li>Simular métricas (visualizações, cliques, conversões) e identificar pontos fracos.</li>
+                        <li>Propor ajustes para aumentar a conversão, como mudar oferta, ajustar texto ou imagem.</li>
+                    </ul>
+                    <h3>Exemplo prático:</h3>
+                    <p>Uma loja percebe que muitos clientes visitam o site, mas não compram. Ao analisar métricas, descobre que a página de checkout é confusa. A solução: melhorar layout, incluir botão claro de compra e enviar e-mail de lembrete, aumentando as vendas.</p>
+                    <h3>Dicas e alertas:</h3>
+                    <ul>
+                        <li>Sempre simule métricas antes de executar campanhas reais.</li>
+                        <li>Pequenos ajustes no funil podem gerar grandes resultados.</li>
+                    </ul>
+                `
+            },
+            10: { modulo: 2, titulo: "Aula 4 — Integração, análise, interpretação", 
+                conteudo: `
+                    <h2>Integração, análise, interpretação</h2>
+                    <p>Nesse módulo vamos aprender a integrar canais e interpretar dados de campanhas.</p>
+                    <h3>Integração de canais:</h3>
+                    <p>Significa usar redes sociais, e-mail, blog e anúncios pagos de forma conjunta para reforçar a mensagem. Por exemplo, o mesmo conteúdo pode ser adaptado em post de Instagram, artigo de blog e e-mail, criando consistência.</p>
+                    <h3>Interpretação de dados:</h3>
+                    <p>Analisar métricas como taxa de abertura de e-mails, cliques em links e conversão ajuda a entender o comportamento do público e ajustar a campanha.</p>
+                    <h3>Exemplo prático:</h3>
+                    <p>Um cliente vê post no Instagram, lê artigo no blog, e recebe e-mail com oferta personalizada. A empresa analisa métricas em cada ponto para identificar onde o público perde interesse e otimiza a comunicação.</p>
+                    <h3>Dicas e alertas:</h3>
+                    <ul>
+                        <li>Não se limite a olhar métricas isoladas; veja o caminho completo do cliente.</li>
+                        <li>Ajuste campanhas com base em dados reais, não em suposições.</li>
+                    </ul>
+                `
+            },
+            11: { modulo: 2, titulo: "Aula 5 — Revisão, melhores práticas, desafios", 
+                conteudo: `
+                    <h2>Revisão, melhores práticas, desafios</h2>
+                    <p>Nesse módulo vamos revisar todo o conteúdo do Módulo 2 e consolidar aprendizados.</p>
+                    <h3>Resumo:</h3>
+                    <ul>
+                        <li>Persona detalhada e segmentação avançada.</li>
+                        <li>Funis intermediários e integração de canais.</li>
+                        <li>Interpretação de KPIs e ajustes estratégicos.</li>
+                    </ul>
+                    <h3>Exemplo prático:</h3>
+                    <p>Criação de campanha completa: Instagram + blog + e-mail, segmentando por idade e interesse, medindo métricas e ajustando para aumentar conversão.</p>
+                    <h3>Dicas finais:</h3>
+                    <ul>
+                        <li>Sempre planejar antes de executar campanhas.</li>
+                        <li>Testar diferentes abordagens e analisar resultados.</li>
+                        <li>Aprender com erros e ajustar estratégias constantemente.</li>
+                    </ul>
+                    <p>Quando estiver pronto, clique no botão abaixo para ir para o Teste Final do Módulo 2.</p>
+                `
+            },
+            12: { modulo: 2, titulo: "Teste do Módulo 2 – Intermediário", 
+                isTeste: true,
+                conteudo: `
+                    <div class="teste-box" id="testeM2" style="--teste-border-light: #b2dfdb;">
+                        <h2>Teste Final - Módulo 2</h2>
+                        <p>Responda às 10 perguntas abaixo. Você precisa de 6 acertos para aprovação.</p>
+
+                        <div class="questao" data-questao="11">
+                            <h3>1. Explique a importância de criar personas detalhadas.</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q11" value="correta"> A) Para segmentar melhor e personalizar mensagens.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q11" value="errada"> B) Para preencher planilhas de clientes.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q11" value="errada"> C) Para enviar a mesma oferta a todos.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(11)">Verificar Resposta</button>
+                        </div>
+                        
+                        <div class="questao" data-questao="12">
+                            <h3>2. O que é a jornada do cliente e por que é importante?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q12" value="correta"> A) Caminho do interesse à compra, ajudando a entregar conteúdo correto.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q12" value="errada"> B) Lista de produtos vendidos.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q12" value="errada"> C) Sequência de e-mails automáticos sem estratégia.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(12)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="13">
+                            <h3>3. Como integrar canais melhora a experiência do cliente?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q13" value="correta"> A) Cria experiência consistente e aumenta engajamento.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q13" value="errada"> B) Apenas repete conteúdo sem foco.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q13" value="errada"> C) Não tem efeito se canais forem usados isoladamente.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(13)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="14">
+                            <h3>4. Explique a função dos KPIs.</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q14" value="correta"> A) Medir desempenho e orientar decisões estratégicas.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q14" value="errada"> B) Apenas gerar relatórios.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q14" value="errada"> C) Contar vendas sem detalhar funil.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(14)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="15">
+                            <h3>5. Como resolver problemas de baixa conversão no meio do funil?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q15" value="correta"> A) Analisar métricas e ajustar conteúdo ou oferta.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q15" value="errada"> B) Aumentar orçamento sem mudar estratégia.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q15" value="errada"> C) Ignorar e esperar que leads comprem.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(15)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="16">
+                            <h3>6. Explique como criar um funil intermediário eficiente.</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q16" value="correta"> A) Conteúdos educativos (topo), comparativos (meio) e ofertas (fundo).</label>
+                            <label class="resposta-opcao"><input type="radio" name="q16" value="errada"> B) Apenas posts isolados.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q16" value="errada"> C) E-mails de venda sem sequência.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(16)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="17">
+                            <h3>7. Por que testar diferentes abordagens é importante?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q17" value="correta"> A) Descobrir o que funciona melhor e melhorar resultados.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q17" value="errada"> B) Manter tudo igual.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q17" value="errada"> C) Apenas perder tempo.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(17)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="18">
+                            <h3>8. Qual o papel da análise na otimização de campanhas?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q18" value="correta"> A) Identificar falhas e ajustar estratégias.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q18" value="errada"> B) Comprovar resultados positivos apenas.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q18" value="errada"> C) Não influencia na estratégia.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(18)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="19">
+                            <h3>9. O que significa "conteúdo personalizado" no Marketing Digital?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q19" value="correta"> A) Conteúdo relevante e direcionado à persona.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q19" value="errada"> B) Conteúdo com o nome do cliente apenas.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q19" value="errada"> C) Conteúdo igual para todos os públicos.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(19)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="20">
+                            <h3>10. Por que a integração de canais é uma "melhor prática"?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q20" value="correta"> A) Reforça a mensagem e cria consistência na marca.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q20" value="errada"> B) Aumenta o custo sem retorno.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q20" value="errada"> C) Não é relevante para pequenos negócios.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(20)">Verificar Resposta</button>
+                        </div>
+
+                        <button id="btnFinalizarTesteM2" class="btn" onclick="finalizarTeste(2, 20, 16)" disabled>Finalizar Teste</button>
+                    </div>
+                `
+            },
+            
+            // MÓDULO 3: AVANÇADO
+            13: { modulo: 3, titulo: "Aula 1 — Otimização, testes A/B, escalabilidade", 
+                conteudo: `
+                    <h2 style="color: var(--module3-color);">Otimização, testes A/B, escalabilidade</h2>
+                    <p>Nesse módulo vamos explorar as estratégias avançadas para otimizar campanhas, realizar testes A/B e planejar a escalabilidade.</p>
+                    <h3>Otimização de Conversão (CRO - Conversion Rate Optimization):</h3>
+                    <p>CRO é o processo de aumentar a porcentagem de visitantes que realizam uma ação desejada (compra, cadastro). Envolve ajustar elementos da página (títulos, CTAs, layout) com base em dados para melhorar o desempenho.</p>
+                    <h3>Testes A/B:</h3>
+                    <p>Os testes A/B consistem em criar duas versões de uma página, e-mail ou anúncio (A e B), e enviá-las a dois grupos de público. A versão que tiver o melhor resultado (maior conversão) é escolhida para ser usada na campanha principal.</p>
+                    <h3>Escalabilidade:</h3>
+                    <p>Escalabilidade é a capacidade de um negócio crescer e aumentar a produção ou o número de clientes sem que os custos aumentem na mesma proporção. No Marketing Digital, significa ter campanhas que podem receber mais investimento e gerar mais lucro.</p>
+                    <h3>Exemplo prático:</h3>
+                    <p>Uma empresa testa duas chamadas para ação diferentes em sua Landing Page (Teste A/B). A versão A usa "Baixe Agora Grátis" e a versão B usa "Quero Meu Guia Completo". Após a análise, a versão B gera 20% mais cadastros, então a empresa adota a versão B e investe mais em tráfego (escalabilidade).</p>
+                    <h3>Dicas e alertas:</h3>
+                    <ul>
+                        <li>Teste apenas uma variável por vez em um Teste A/B para saber o que realmente causou a diferença no resultado.</li>
+                        <li>Escalar a campanha antes da otimização pode desperdiçar recursos.</li>
+                    </ul>
+                `
+            },
+            14: { modulo: 3, titulo: "Aula 2 — Automação, Big Data, Machine Learning", 
+                conteudo: `
+                    <h2 style="color: var(--module3-color);">Automação, Big Data, Machine Learning</h2>
+                    <p>Nesse módulo vamos abordar a automação de marketing e o uso de tecnologias avançadas para otimizar campanhas.</p>
+                    <h3>Automação de Marketing:</h3>
+                    <p>A automação permite automatizar tarefas repetitivas como envio de e-mails, postagens em redes sociais e segmentação de leads. Isso aumenta a eficiência e permite que o profissional de marketing se concentre em tarefas mais estratégicas.</p>
+                    <h3>Big Data e Análise de Dados:</h3>
+                    <p>Big Data é um grande volume de dados que, quando analisado, revela padrões e tendências de consumo. O uso de Big Data permite prever o comportamento do cliente e personalizar a comunicação em um nível muito mais profundo.</p>
+                    <h3>Machine Learning (Aprendizado de Máquina):</h3>
+                    <p>O Machine Learning é usado em plataformas de anúncios (Google Ads, Meta Ads) para otimizar automaticamente o desempenho das campanhas, encontrando o público mais propenso a converter no menor custo possível.</p>
+                    <h3>Exemplo prático:</h3>
+                    <p>Um sistema de e-mail marketing envia automaticamente uma série de 5 e-mails para um cliente que abandonou o carrinho de compras (automação), e a plataforma de anúncios ajusta lances e público-alvo em tempo real para maximizar o retorno do investimento (Machine Learning).</p>
+                    <h3>Dicas e alertas:</h3>
+                    <ul>
+                        <li>Ferramentas de automação exigem planejamento cuidadoso para não enviar mensagens irrelevantes.</li>
+                        <li>O Big Data só é útil se for analisado e transformado em ações práticas.</li>
+                    </ul>
+                `
+            },
+            15: { modulo: 3, titulo: "Aula 3 — Segurança, ética, tendências futuras", 
+                conteudo: `
+                    <h2 style="color: var(--module3-color);">Segurança, ética, tendências futuras</h2>
+                    <p>Nesse módulo vamos discutir a importância da segurança de dados, a ética no Marketing Digital e as tendências do futuro.</p>
+                    <h3>LGPD e Privacidade:</h3>
+                    <p>A Lei Geral de Proteção de Dados (LGPD) no Brasil e outras regulamentações globais exigem que empresas protejam os dados pessoais dos clientes, obtenham consentimento e garantam transparência no uso dessas informações. A ética é fundamental para construir confiança.</p>
+                    <h3>Tendências Futuras:</h3>
+                    <ul>
+                        <li><strong>Metaverso e Realidade Aumentada:</strong> Uso de ambientes virtuais para interagir com a marca e experimentar produtos.</li>
+                        <li><strong>Marketing de Voz:</strong> Otimização para assistentes de voz (Alexa, Google Assistant) e busca por voz.</li>
+                        <li><strong>Inteligência Artificial Generativa:</strong> Uso de I.A. para criar conteúdo (textos, imagens) em larga escala.</li>
+                    </ul>
+                    <h3>Exemplo prático:</h3>
+                    <p>Uma loja online atualiza sua política de privacidade para estar em conformidade com a LGPD, solicitando o consentimento explícito dos clientes para o uso de seus dados (ética e segurança). Ao mesmo tempo, começa a testar um filtro de Realidade Aumentada no Instagram para que os clientes "experimentem" roupas (tendência futura).</p>
+                    <h3>Dicas e alertas:</h3>
+                    <ul>
+                        <li>Priorize a segurança e a ética; a confiança do cliente é o ativo mais valioso.</li>
+                        <li>Fique atento às novas tecnologias, como I.A. e Metaverso, para manter a relevância.</li>
+                    </ul>
+                `
+            },
+            16: { modulo: 3, titulo: "Aula 4 — Revisão Geral e Conclusão do Curso", 
+                conteudo: `
+                    <h2 style="color: var(--module3-color);">Revisão Geral e Conclusão do Curso</h2>
+                    <p>Parabéns! Você chegou ao final do conteúdo programático. Aqui está uma revisão dos principais pontos abordados:</p>
+                    <ul>
+                        <li><strong>Módulo 1:</strong> Fundamentos (SEO, Funil, Conteúdo).</li>
+                        <li><strong>Módulo 2:</strong> Estratégias (Persona, KPIs, Integração de Canais).</li>
+                        <li><strong>Módulo 3:</strong> Avançado (Testes A/B, Automação, Ética e Tendências).</li>
+                    </ul>
+                    <p>O Marketing Digital é uma área de constante aprendizado. Continue praticando, analisando seus resultados e adaptando-se às mudanças do mercado.</p>
+                    <p>Agora você está pronto(a) para o último teste e para emitir seu Certificado de Conclusão.</p>
+                    <p>Quando estiver pronto, clique no botão abaixo para ir para o Teste Final do Módulo 3.</p>
+                `
+            },
+            17: { modulo: 3, titulo: "Teste do Módulo 3 – Avançado", 
+                isTeste: true,
+                conteudo: `
+                    <div class="teste-box" id="testeM3" style="--teste-border-light: #b2dfdb;">
+                        <h2 style="color: var(--module3-color);">Teste Final - Módulo 3</h2>
+                        <p>Responda às 10 perguntas abaixo. Você precisa de 6 acertos para aprovação.</p>
+                        
+                        <div class="questao" data-questao="21">
+                            <h3>1. Explique o conceito de CRO (Conversion Rate Optimization).</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q21" value="correta"> A) Aumentar a porcentagem de visitantes que realizam uma ação desejada.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q21" value="errada"> B) Diminuir o custo por clique.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q21" value="errada"> C) Criar mais conteúdo.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(21)">Verificar Resposta</button>
+                        </div>
+                        
+                        <div class="questao" data-questao="22">
+                            <h3>2. Qual a regra fundamental ao realizar um Teste A/B?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q22" value="correta"> A) Testar apenas uma variável por vez.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q22" value="errada"> B) Testar todas as variáveis simultaneamente.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q22" value="errada"> C) Apenas testar títulos.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(22)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="23">
+                            <h3>3. O que é escalabilidade no contexto do Marketing Digital?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q23" value="correta"> A) Crescer o negócio com aumento de custo não proporcional.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q23" value="errada"> B) Aumentar apenas o volume de e-mails.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q23" value="errada"> C) Manter o mesmo nível de custo e receita.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(23)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="24">
+                            <h3>4. Explique a função da Automação de Marketing.</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q24" value="correta"> A) Automatizar tarefas repetitivas, liberando tempo para estratégia.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q24" value="errada"> B) Substituir totalmente o trabalho humano.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q24" value="errada"> C) Aumentar o custo de mão de obra.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(24)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="25">
+                            <h3>5. Como o Machine Learning otimiza campanhas de anúncios?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q25" value="correta"> A) Ajusta lances e público-alvo em tempo real para maximizar o ROI.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q25" value="errada"> B) Cria imagens para posts sem otimizar a distribuição.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q25" value="errada"> C) Apenas reporta os erros da campanha.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(25)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="26">
+                            <h3>6. Qual a relevância da LGPD para o Marketing Digital?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q26" value="correta"> A) Exige proteção de dados, consentimento e transparência.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q26" value="errada"> B) Permite o uso de dados sem consentimento explícito.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q26" value="errada"> C) Não se aplica a campanhas online.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(26)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="27">
+                            <h3>7. O que são tendências como Metaverso e Realidade Aumentada?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q27" value="correta"> A) Novas formas de interação e experimentação de produtos digitais.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q27" value="errada"> B) Tecnologias limitadas a jogos.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q27" value="errada"> C) Conceitos que não afetam o Marketing Digital.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(27)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="28">
+                            <h3>8. Qual a importância da ética no uso de Big Data?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q28" value="correta"> A) Construir confiança e garantir a privacidade dos clientes.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q28" value="errada"> B) Coletar o máximo de dados possível, sem transparência.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q28" value="errada"> C) Não é relevante, pois os dados são anônimos.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(28)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="29">
+                            <h3>9. O que a I.A. Generativa pode trazer para a produção de conteúdo?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q29" value="correta"> A) Criação de textos e imagens em larga escala, otimizando o processo.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q29" value="errada"> B) Apenas a substituição de redatores.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q29" value="errada"> C) Maior custo de produção.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(29)">Verificar Resposta</button>
+                        </div>
+
+                        <div class="questao" data-questao="30">
+                            <h3>10. Por que a otimização de campanhas deve vir antes da escalabilidade?</h3>
+                            <label class="resposta-opcao"><input type="radio" name="q30" value="correta"> A) Para garantir que o aumento de investimento não desperdice recursos em algo ineficiente.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q30" value="errada"> B) Porque a escalabilidade é mais simples que a otimização.</label>
+                            <label class="resposta-opcao"><input type="radio" name="q30" value="errada"> C) Não há diferença na ordem dos processos.</label>
+                            <button class="btn-verificar-resposta" onclick="verificarResposta(30)">Verificar Resposta</button>
+                        </div>
+                        
+                        <button id="btnFinalizarTesteM3" class="btn" onclick="finalizarTeste(3, 30, 24)" disabled>Finalizar Teste</button>
+                    </div>
+                `
+            }
+        };
+
+        const totalAulas = Object.keys(aulas).length;
+
+        // **********************************************
+        // 2. GERENCIAMENTO DE ESTADO (LOCALSTORAGE) E VARIÁVEIS GLOBAIS
+        // **********************************************
+        let estado = {
+            nome: '',
+            email: '', 
+            // NOVO: Adicionado CPF e Matrícula
+            cpf: '',
+            matricula: '',
+            // Fim NOVO
+            aulaAtual: 1,
+            aulasConcluidas: {}, // {1: true, 2: false}
+            notaM1: 0, notaM2: 0, notaM3: 0,
+            testeM1Finalizado: false, testeM2Finalizado: false, testeM3Finalizado: false,
+            inscricaoFeita: false, 
+            respostasMarcadas: {} // {1: 'correta', 2: 'errada'}
+        };
+
+        function salvarEstado() {
+            localStorage.setItem('cursoEstado', JSON.stringify(estado));
+        }
+
+        function carregarEstado() {
+            const estadoSalvo = localStorage.getItem('cursoEstado');
+            if (estadoSalvo) {
+                // Tenta carregar o estado salvo, mantendo as propriedades padrão caso não existam no salvo
+                estado = { ...estado, ...JSON.parse(estadoSalvo) };
+            }
+            
+            // Verifica o Dark Mode
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                 document.body.classList.add('dark-mode');
+                 document.getElementById('darkModeToggle').textContent = 'Modo Diurno ☀️';
+            }
+
+            // MODIFICADO: Sempre que houver um e-mail salvo (após a inscrição), vai para a tela de login.
+            if (estado.email && estado.nome) {
+                voltarParaAcesso(true); // Argumento 'true' para não salvar estado desnecessariamente
+            } else {
+                // Se não tiver, mostra a tela de acesso/inscrição (primeira vez)
+                document.getElementById('telaInscricao').style.display = 'block';
+                document.getElementById('sidebar').style.display = 'none';
+                document.getElementById('aulaConteudo').style.display = 'none';
+                document.getElementById('navBotoes').style.display = 'none';
+                document.getElementById('btnCertInscricao').style.display = 'none';
+                document.getElementById('btnVoltarAcesso').style.display = 'none'; // Esconde o botão de voltar quando na tela inicial
+                
+                document.getElementById('mensagemInscricao').textContent = 'Preencha seus dados para salvar seu progresso e acessar o certificado de inscrição.';
+                document.getElementById('btnAcessarCurso').textContent = 'Me Inscrever e Começar o Curso';
+            }
+        }
+        
+        // MODIFICADO: Função irParaCurso não recebe mais o argumento 'continuar', e o pop-up automático foi removido.
+        function irParaCurso() {
+             document.getElementById('telaInscricao').style.display = 'none';
+             document.getElementById('sidebar').style.display = 'block';
+             document.getElementById('aulaConteudo').style.display = 'block';
+             document.getElementById('navBotoes').style.display = 'flex'; // Garante que a navegação apareça
+             document.getElementById('btnCertInscricao').style.display = 'block'; 
+             document.getElementById('btnVoltarAcesso').style.display = 'block'; // Mostra botão de voltar/acesso
+             
+             montarSidebar();
+             mostrarAula(estado.aulaAtual);
+             salvarEstado(); // Salva a transição para a tela de curso
+        }
+
+        // MODIFICADO: Função para simular o "Voltar para Acesso" que agora é o "Login"
+        function voltarParaAcesso(isReload = false) {
+            if (!isReload) { // Não salva se estiver sendo chamado ao recarregar a página
+                salvarEstado(); 
+            }
+            
+            // Oculta o conteúdo do curso
+            document.getElementById('sidebar').style.display = 'none';
+            document.getElementById('aulaConteudo').style.display = 'none';
+            document.getElementById('navBotoes').style.display = 'none';
+            document.getElementById('btnCertInscricao').style.display = 'none';
+            document.getElementById('btnVoltarAcesso').style.display = 'none';
+
+            // Mostra a tela de acesso/inscrição
+            document.getElementById('telaInscricao').style.display = 'block';
+
+            // Atualiza o texto na tela de acesso/inscrição para "Continuar"
+            document.getElementById('mensagemInscricao').textContent = 'Use seu Nome, E-mail e CPF para continuar seu progresso.';
+            document.getElementById('btnAcessarCurso').textContent = 'Continuar o Curso';
+
+            // Pré-preenche os campos (simula o "lembrar" o login)
+            document.getElementById('alunoNome').value = estado.nome || '';
+            document.getElementById('alunoEmail').value = estado.email || '';
+            document.getElementById('alunoCPF').value = estado.cpf || '';
+        }
+        
+        // NOVO: Função para gerar um número de matrícula simples
+        function gerarNumeroMatricula() {
+            // Gera um número no formato YYYYMMDDxxxxxx
+            const data = new Date();
+            const ano = data.getFullYear().toString();
+            const mes = (data.getMonth() + 1).toString().padStart(2, '0');
+            const dia = data.getDate().toString().padStart(2, '0');
+            const aleatorio = Math.floor(100000 + Math.random() * 900000).toString(); // 6 dígitos
+            return `MD-${ano}${mes}${dia}-${aleatorio}`;
+        }
+
+
+        // **********************************************
+        // 3. LÓGICA DE INSCRIÇÃO E POP-UP (AJUSTADO)
+        // **********************************************
+        function iniciarOuAcessar(event) {
+            event.preventDefault();
+            const nomeDigitado = document.getElementById('alunoNome').value.trim();
+            const emailDigitado = document.getElementById('alunoEmail').value.trim();
+            const cpfDigitado = document.getElementById('alunoCPF').value.trim(); 
+            
+            // Simula uma tentativa de login/inscrição
+            if (nomeDigitado && emailDigitado && cpfDigitado) {
+                
+                let isNewInscription = false;
+                
+                // Se a inscrição não foi feita, é a primeira vez (novo aluno)
+                if (!estado.inscricaoFeita) {
+                    estado.matricula = gerarNumeroMatricula(); // Gera matrícula na primeira inscrição
+                    estado.inscricaoFeita = true;
+                    isNewInscription = true; // Flag para a primeira inscrição
+                }
+                
+                // Salva os dados (seja novo ou login)
+                estado.nome = nomeDigitado;
+                estado.email = emailDigitado;
+                estado.cpf = cpfDigitado;
+
+                salvarEstado();
+
+                // 1. Vai para o curso
+                irParaCurso(); 
+                
+                // 2. SE FOR A PRIMEIRA INSCRIÇÃO: exibe o certificado de inscrição (o pop-up)
+                if (isNewInscription) {
+                    mostrarCertificadoInscricao(); 
+                }
+
+            } else {
+                 alert("Por favor, preencha Nome Completo, E-mail e CPF.");
+            }
+        }
+
+        function mostrarCertificadoInscricao() {
+            if (!estado.inscricaoFeita) {
+                 alert("Você precisa se inscrever primeiro!");
+                 return;
+            }
+            const popup = document.getElementById('certificadoInscricaoPopup');
+            document.getElementById('certificadoInscricaoNome').textContent = estado.nome;
+            document.getElementById('certificadoInscricaoEmail').textContent = estado.email;
+            document.getElementById('certificadoInscricaoCPF').textContent = estado.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'); // Formata CPF
+            document.getElementById('certificadoInscricaoMatricula').textContent = estado.matricula;
+            document.getElementById('certificadoInscricaoData').textContent = new Date().toLocaleDateString('pt-BR');
+            popup.style.display = 'flex'; // Usar 'flex' para manter a centralização do CSS
+        }
+        
+        function fecharCertificadoInscricao() {
+            document.getElementById('certificadoInscricaoPopup').style.display = 'none';
+        }
+
+        // **********************************************
+        // 4. NAVEGAÇÃO E SIDEBAR
+        // **********************************************
+        function montarSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.innerHTML = ''; // Limpa a sidebar
+
+            let currentModulo = 0;
+            for (const id in aulas) {
+                const aula = aulas[id];
+
+                // Adiciona título do módulo, se for o início de um novo módulo
+                if (aula.modulo !== currentModulo) {
+                    const moduloDiv = document.createElement('div');
+                    moduloDiv.className = `modulo-title modulo-${aula.modulo}`;
+                    moduloDiv.textContent = `MÓDULO ${aula.modulo}: ${aula.modulo === 1 ? 'Fundamentos (Básico)' : aula.modulo === 2 ? 'Intermediário' : 'Avançado'}`;
+                    sidebar.appendChild(moduloDiv);
+                    currentModulo = aula.modulo;
+                }
+
+                const item = document.createElement('div');
+                item.className = 'menu-item';
+                item.setAttribute('data-aula', id);
+                item.setAttribute('data-modulo', aula.modulo);
+                
+                // Marca como concluída
+                if (estado.aulasConcluidas[id] && !aula.isTeste) {
+                    item.classList.add('concluida');
+                }
+
+                // Adiciona o indicador de status do teste
+                const tituloSpan = document.createElement('span');
+                tituloSpan.textContent = aula.titulo;
+                item.appendChild(tituloSpan);
+
+                if (aula.isTeste) {
+                    const status = document.createElement('span');
+                    const nota = estado[`notaM${aula.modulo}`];
+                    
+                    if (estado[`testeM${aula.modulo}Finalizado`]) {
+                         status.className = 'status-badge ' + (nota >= 60 ? 'aprovado' : 'reprovado');
+                         status.textContent = nota >= 60 ? `Aprovado (${nota}%)` : `Reprovado (${nota}%)`;
+                         if (nota >= 60) item.classList.add('concluida'); // Marca teste como concluído/aprovado
+                    } else {
+                         status.className = 'status-badge pendente';
+                         status.textContent = 'Pendente';
+                    }
+                    item.appendChild(status);
+                }
+
+                item.setAttribute('onclick', `mostrarAula(${id})`);
+                sidebar.appendChild(item);
+            }
+        }
+
+        function mostrarAula(id) {
+            id = parseInt(id);
+
+            // Atualiza o estado
+            estado.aulaAtual = id;
+            salvarEstado();
+
+            // Atualiza o conteúdo
+            const aula = aulas[id];
+            const aulaContent = document.getElementById('aulaConteudo');
+            aulaContent.innerHTML = aula.conteudo;
+
+            // Marca o item ativo na sidebar
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            const activeItem = document.querySelector(`.menu-item[data-aula="${id}"]`);
+            if (activeItem) {
+                activeItem.classList.add('active');
+                activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            // Atualiza botões de navegação
+            const navBotoes = document.getElementById('navBotoes');
+            navBotoes.style.display = 'flex';
+            
+            const btnAnterior = document.getElementById('btnAnterior');
+            const btnProximo = document.getElementById('btnProximo');
+            
+            btnAnterior.disabled = (id === 1);
+            btnProximo.style.display = 'block';
+
+            if (id === totalAulas) {
+                btnProximo.textContent = 'Fim do Curso';
+                btnProximo.disabled = true;
+                // Se for a última aula e o teste do módulo 3 não estiver finalizado, habilita o botão de certificado
+                if(aula.isTeste && !estado.testeM3Finalizado) {
+                    document.getElementById('btnFinalizarTesteM3').textContent = 'Finalizar Teste e Emitir Certificado';
+                }
+            } else if (aula.isTeste && !estado[`testeM${aula.modulo}Finalizado`]) {
+                btnProximo.style.display = 'none'; // Não mostra próximo botão se o teste não estiver finalizado
+            } else {
+                btnProximo.textContent = 'Próxima Aula →';
+                btnProximo.disabled = false;
+            }
+
+            // Se for aula normal, marca como concluída (automaticamente ao visualizar)
+            if (!aula.isTeste) {
+                estado.aulasConcluidas[id] = true;
+                if(activeItem) activeItem.classList.add('concluida');
+                salvarEstado();
+            }
+
+            // Lógica para carregar respostas do teste, se for o caso
+            if (aula.isTeste) {
+                carregarRespostasTeste(id);
+                // Bloqueia o teste se já finalizado
+                if (estado[`testeM${aula.modulo}Finalizado`]) {
+                    desabilitarTeste(aula.modulo);
+                }
+            }
+        }
+        
+        function irParaAulaAnterior() {
+            const aulaAnteriorId = estado.aulaAtual - 1;
+            if (aulaAnteriorId >= 1) {
+                mostrarAula(aulaAnteriorId);
+            }
+        }
+
+        function irParaProximaAula() {
+            const proximaAulaId = estado.aulaAtual + 1;
+            if (proximaAulaId <= totalAulas) {
+                mostrarAula(proximaAulaId);
+            }
+        }
+
+        // **********************************************
+        // 5. LÓGICA DO TESTE (RESTURADO)
+        // **********************************************
+        function carregarRespostasTeste(aulaId) {
+            const modulo = aulas[aulaId].modulo;
+            const testeBox = document.getElementById(`testeM${modulo}`);
+            
+            // Carrega respostas marcadas e verifica se o botão de finalizar deve ser habilitado
+            let perguntasRespondidas = 0;
+            const totalPerguntas = 10;
+            for (let i = 1; i <= totalPerguntas; i++) {
+                const questaoId = (modulo - 1) * 10 + i;
+                const respostaSalva = estado.respostasMarcadas[questaoId];
+                if (respostaSalva) {
+                    perguntasRespondidas++;
+                    const input = testeBox.querySelector(`input[name="q${questaoId}"][value="${respostaSalva}"]`);
+                    if (input) input.checked = true;
+                }
+            }
+
+            const btnFinalizar = document.getElementById(`btnFinalizarTesteM${modulo}`);
+            if (btnFinalizar) {
+                btnFinalizar.disabled = (perguntasRespondidas !== totalPerguntas);
+            }
+        }
+
+        function verificarResposta(questaoId) {
+            const questao = document.querySelector(`.questao[data-questao="${questaoId}"]`);
+            const modulo = aulas[estado.aulaAtual].modulo;
+            
+            // Limpa feedback anterior
+            questao.querySelectorAll('.resposta-opcao').forEach(label => {
+                label.classList.remove('correta', 'incorreta');
+            });
+            
+            const selected = questao.querySelector(`input[name="q${questaoId}"]:checked`);
+            
+            if (selected) {
+                const valor = selected.value;
+                estado.respostasMarcadas[questaoId] = valor;
+                salvarEstado();
+                
+                // Simplesmente marca a opção selecionada no estado (sem revelar a resposta na hora)
+                // O feedback visual só é dado após finalizar o teste.
+
+                let perguntasRespondidas = 0;
+                for (let i = (modulo - 1) * 10 + 1; i <= modulo * 10; i++) {
+                    if (estado.respostasMarcadas[i]) {
+                        perguntasRespondidas++;
+                    }
+                }
+
+                const btnFinalizar = document.getElementById(`btnFinalizarTesteM${modulo}`);
+                if (btnFinalizar) {
+                    btnFinalizar.disabled = (perguntasRespondidas !== 10);
+                }
+            }
+        }
+
+        function finalizarTeste(modulo, totalPerguntas, acertosMinimos) {
+            if (estado[`testeM${modulo}Finalizado`]) {
+                if (modulo === 3 && estado.notaM3 >= 60) {
+                     mostrarCertificadoConclusao();
+                } else if (modulo < 3 && estado.notaM3 >= 60) {
+                     irParaProximaAula();
+                }
+                return;
+            }
+
+            let acertos = 0;
+            const notaMaxima = modulo * 10;
+            const acertosCorretos = {}; // Para referência futura
+
+            const respostasCorretas = {
+                1: 'correta', 2: 'correta', 3: 'correta', 4: 'correta', 5: 'correta', 
+                6: 'correta', 7: 'correta', 8: 'correta', 9: 'correta', 10: 'correta',
+                11: 'correta', 12: 'correta', 13: 'correta', 14: 'correta', 15: 'correta', 
+                16: 'correta', 17: 'correta', 18: 'correta', 19: 'correta', 20: 'correta',
+                21: 'correta', 22: 'correta', 23: 'correta', 24: 'correta', 25: 'correta',
+                26: 'correta', 27: 'correta', 28: 'correta', 29: 'correta', 30: 'correta'
+            };
+
+            for (let i = 1; i <= totalPerguntas; i++) {
+                const questaoId = (modulo - 1) * 10 + i;
+                const respostaUsuario = estado.respostasMarcadas[questaoId];
+                const respostaCerta = respostasCorretas[questaoId];
+                
+                if (respostaUsuario === respostaCerta) {
+                    acertos++;
+                }
+
+                // Aplica feedback visual
+                const questao = document.querySelector(`.questao[data-questao="${questaoId}"]`);
+                if (questao) {
+                    questao.querySelector(`input[value="${respostaCerta}"]`).closest('.resposta-opcao').classList.add('correta');
+                    if (respostaUsuario && respostaUsuario !== respostaCerta) {
+                        const inputIncorreto = questao.querySelector(`input[value="${respostaUsuario}"]`);
+                        if(inputIncorreto) {
+                            inputIncorreto.closest('.resposta-opcao').classList.add('incorreta');
+                        }
+                    }
+                }
+            }
+
+            const nota = Math.round((acertos / totalPerguntas) * 100);
+            estado[`notaM${modulo}`] = nota;
+            estado[`testeM${modulo}Finalizado`] = true;
+            estado.aulasConcluidas[estado.aulaAtual] = (nota >= 60); // Marca aula (teste) como concluída se aprovado
+
+            salvarEstado();
+            montarSidebar();
+            desabilitarTeste(modulo);
+
+            let mensagem = `Você acertou ${acertos} de ${totalPerguntas} perguntas (${nota}%).`;
+            if (nota >= 60) {
+                mensagem += '\nParabéns, você foi APROVADO(A) neste módulo!';
+            } else {
+                mensagem += '\nInfelizmente você REPROVOU. Tente novamente!';
+            }
+            alert(mensagem);
+
+            if (modulo === 3 && nota >= 60) {
+                 mostrarCertificadoConclusao();
+            } else if (modulo < 3 && nota >= 60) {
+                irParaProximaAula(); // Passa para o próximo módulo
+            }
+        }
+
+        function desabilitarTeste(modulo) {
+            const testeBox = document.getElementById(`testeM${modulo}`);
+            if (testeBox) {
+                testeBox.querySelectorAll('input[type="radio"], .btn-verificar-resposta').forEach(el => {
+                    el.disabled = true;
+                });
+                const btnFinalizar = document.getElementById(`btnFinalizarTesteM${modulo}`);
+                btnFinalizar.textContent = 'Teste Finalizado';
+                btnFinalizar.disabled = false; // Permite clicar para ir para o próximo ou certificado
+                btnFinalizar.onclick = (modulo === 3 && estado.notaM3 >= 60) ? mostrarCertificadoConclusao : (modulo < 3 && estado[`notaM${modulo}`] >= 60) ? irParaProximaAula : () => {}; // Adicionado handler para reprovados/aprovados em módulos < 3
+                if (modulo === 3 && estado.notaM3 >= 60) {
+                    btnFinalizar.textContent = 'Emitir Certificado de Conclusão';
+                }
+            }
+        }
+
+        // **********************************************
+        // 6. CERTIFICADO DE CONCLUSÃO (AJUSTADO)
+        // **********************************************
+        function formatarData(data) {
+            return new Date(data).toLocaleDateString('pt-BR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+        
+        // NOVO: Função para formatar o CPF
+        function formatarCPF(cpf) {
+             // Aceita apenas dígitos e aplica a máscara 000.000.000-00
+             cpf = cpf.replace(/\D/g, ''); 
+             return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        }
+
+        function calcularNotaGeral() {
+             // Soma as notas dos testes
+            const notas = [estado.notaM1, estado.notaM2, estado.notaM3];
+            const notasValidas = notas.filter(n => typeof n === 'number' && n >= 0);
+            
+            if (notasValidas.length === 0) return 0;
+            
+            const media = notasValidas.reduce((a, b) => a + b, 0) / notasValidas.length;
+            return Math.round(media);
+        }
+
+        function mostrarCertificadoConclusao() {
+            if (!estado.testeM3Finalizado || estado.notaM3 < 60) {
+                alert('Você precisa ser aprovado no Teste do Módulo 3 para emitir o certificado de conclusão.');
+                return;
+            }
+
+            const mediaFinal = calcularNotaGeral();
+            const dataConclusao = new Date().toLocaleDateString('pt-BR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            document.getElementById('certificadoConclusaoNome').textContent = estado.nome;
+            document.getElementById('certificadoConclusaoEmail').textContent = estado.email;
+            document.getElementById('certificadoConclusaoCPF').textContent = formatarCPF(estado.cpf); // NOVO
+            document.getElementById('certificadoConclusaoMatricula').textContent = estado.matricula; // NOVO
+            document.getElementById('certificadoConclusaoData').textContent = `São Paulo, ${dataConclusao}`;
+            document.getElementById('percentualAprovacao').innerHTML = `aprovação final com **${mediaFinal}%** de acerto.`;
+
+            document.getElementById('certificadoConclusaoPopup').style.display = 'flex';
+        }
+
+        function fecharCertificadoConclusao() {
+            document.getElementById('certificadoConclusaoPopup').style.display = 'none';
+        }
+
+        function downloadCertificadoPDF() {
+            const popup = document.getElementById('certificadoConclusaoPopup').querySelector('.certificado-conclusao');
+            
+            // Lógica de impressão (usando o CSS @media print para formatar)
+            
+            const closeBtn = popup.querySelector('.close-btn');
+            const downloadBtn = document.getElementById('btnDownloadPDF');
+            const nomeOriginal = document.title;
+            
+            // Esconde botões antes de imprimir
+            if (closeBtn) closeBtn.style.display = 'none';
+            if (downloadBtn) downloadBtn.style.display = 'none';
+            
+            document.title = "Certificado - " + (estado.nome || 'Aluno'); 
+            
+            window.print();
+
+            // Restaura botões e título
+            if (closeBtn) closeBtn.style.display = 'block'; 
+            if (downloadBtn) downloadBtn.style.display = 'block'; 
+            document.title = nomeOriginal; 
+        }
+
+        // MODO NOTURNO
+        function toggleDarkMode() {
+             document.body.classList.toggle('dark-mode');
+             const isDarkMode = document.body.classList.contains('dark-mode');
+             const button = document.getElementById('darkModeToggle');
+             if (isDarkMode) {
+                 button.textContent = 'Modo Diurno ☀️';
+                 localStorage.setItem('darkMode', 'enabled');
+             } else {
+                 button.textContent = 'Modo Noturno 🌙';
+                 localStorage.setItem('darkMode', 'disabled');
+             }
+        }
+        
+        // **********************************************
+        // 7. LISTENERS GERAIS (SALVAMENTO AUTOMÁTICO)
+        // **********************************************
+        // Garante que o estado seja salvo quando o usuário fechar ou recarregar a página
+        window.addEventListener('beforeunload', salvarEstado);
+
+        // CARREGA AO INICIAR
+        document.addEventListener('DOMContentLoaded', carregarEstado);
+    </script>
+</body>
+</html>
