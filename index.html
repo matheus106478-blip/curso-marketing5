@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso Completo de Marketing Digital</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    <header>
+        <button class="btn-header btn-voltar-topo" onclick="navegarParaAnterior()">← Voltar</button>
+        <h1>Curso Completo de Marketing Digital</h1>
+        <p>Aprenda do zero a criar sua presença digital e vender pela internet</p>
+        <button class="btn-header btn-dark-mode" id="darkModeToggle" onclick="toggleDarkMode()">Modo Noturno 🌙</button>
+    </header>
+
+    <main id="telaInscricao" class="inscricao" style="padding: 50px; max-width: 600px; margin: 50px auto; background: var(--card); border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h2>Inscreva-se para começar o curso</h2>
+        <p>Preencha seus dados para gerar seu acesso e certificado de inscrição:</p>
+        <input type="text" id="nomeAluno" placeholder="Seu nome completo" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid var(--muted); border-radius: 5px;"><br>
+        <input type="text" id="cpfAluno" placeholder="Seu CPF (somente números)" style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid var(--muted); border-radius: 5px;"><br>
+        <button class="btn" onclick="iniciarCurso()" style="width: 100%; background: var(--success);">Iniciar Curso</button>
+        <br>
+        <button class="btn" style="background:#10b981; width: 100%;" onclick="abrirCertificadoInscricao()">Ver Certificado de Inscrição</button>
+        
+        <p style="margin-top: 20px; color: var(--muted); font-size: 0.85rem;">Esta página foi acessada <span id="accessCount">0</span> vezes.</p>
+    </main>
+
+    <div id="certificadoInscricaoPopup" class="popup-bg" onclick="fecharCertificadoInscricao(event)">
+        <div class="certificado-inscricao">
+            <button class="close-btn" onclick="fecharCertificadoInscricao(event)">X</button>
+            <h2>CERTIFICADO DE INSCRIÇÃO</h2>
+            <h1>Curso de Marketing Digital</h1>
+            <p style="margin-top: 20px;">Este documento certifica a inscrição de:</p>
+            <h3 id="certificadoInscricaoNome">NOME DO ALUNO</h3>
+            <p>no curso online de Marketing Digital, em <span id="certificadoInscricaoData">Data</span>.</p>
+        </div>
+    </div>
+
+
+    <script>
+        function iniciarCurso() {
+            const nome = document.getElementById('nomeAluno').value.trim();
+            const cpf = document.getElementById('cpfAluno').value.trim();
+            
+            if (!nome || !cpf) {
+                alert('Por favor, preencha seu nome e CPF para iniciar o curso.');
+                return;
+            }
+
+            const estado = {
+                nome: nome,
+                cpf: cpf,
+                ultimaAula: 1,
+                progresso: {},
+                modulosAprovados: { m1: false, m2: false, m3: false },
+                testeM1Respostas: {},
+                testeM2Respostas: {},
+                testeM3Respostas: {}
+            };
+            
+            // Salva o estado e redireciona
+            localStorage.setItem('estadoCurso', JSON.stringify(estado));
+            window.location.href = 'curso.html';
+        }
+        
+        function abrirCertificadoInscricao() {
+            const nome = document.getElementById('nomeAluno').value.trim();
+            const cpf = document.getElementById('cpfAluno').value.trim();
+            
+            if (!nome || !cpf) {
+                alert('Preencha seu nome e CPF para gerar o Certificado de Inscrição.');
+                return;
+            }
+
+            document.getElementById('certificadoInscricaoNome').textContent = nome.toUpperCase();
+            document.getElementById('certificadoInscricaoData').textContent = new Date().toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+            const popup = document.getElementById('certificadoInscricaoPopup');
+            popup.style.display = 'flex';
+        }
+
+        function fecharCertificadoInscricao(event) {
+             if (event.target.classList.contains('popup-bg') || event.target.classList.contains('close-btn')) {
+                 document.getElementById('certificadoInscricaoPopup').style.display = 'none';
+             }
+        }
+        
+        function navegarParaAnterior() {
+             // Não faz nada, é a página inicial
+        }
+        
+        // Função de Contagem de Acessos
+        function initializeAccessCount() {
+            let count = parseInt(localStorage.getItem('accessCount')) || 0;
+            count++;
+            localStorage.setItem('accessCount', count);
+            
+            const countElement = document.getElementById('accessCount');
+            if(countElement) {
+                 countElement.textContent = count;
+            }
+        }
+
+        // Função de Modo Noturno (copiada para manter o estado visual na inscrição)
+        function toggleDarkMode() {
+             document.body.classList.toggle('dark-mode');
+             const isDarkMode = document.body.classList.contains('dark-mode');
+             const button = document.getElementById('darkModeToggle');
+             if (isDarkMode) {
+                 button.textContent = 'Modo Diurno ☀️';
+                 localStorage.setItem('darkMode', 'enabled');
+             } else {
+                 button.textContent = 'Modo Noturno 🌙';
+                 localStorage.setItem('darkMode', 'disabled');
+             }
+        }
+
+        // Aplica o modo noturno e inicia a contagem ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+             if (localStorage.getItem('darkMode') === 'enabled') {
+                 document.body.classList.add('dark-mode');
+                 const button = document.getElementById('darkModeToggle');
+                 if (button) button.textContent = 'Modo Diurno ☀️';
+             }
+             initializeAccessCount();
+        });
+    </script>
+</body>
+</html>
