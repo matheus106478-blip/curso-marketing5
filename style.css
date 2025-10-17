@@ -1,0 +1,529 @@
+/* Variáveis de Cor */
+:root {
+    --primary: #0b79d0; /* Azul Principal (Módulo 1 - Básico) */
+    --accent: #1e88e5;
+    --muted: #6b7280;
+    --bg: #f3f6fb;
+    --card: #ffffff;
+    --success: #28a745;
+    --danger: #e63946;
+    --text-color: #1f2937;
+    --close-color: #AAAAAA;
+    --teste-bg-light: #f7f9ff;
+    --teste-border-light: #e0e7ff;
+
+    /* COR PARA O MÓDULO 2: VERDE TURQUESA */
+    --module2-color: #009688;
+    /* COR PARA O MÓDULO 3: VERDE ESCURO / ESMERALDA */
+    --module3-color: #008000;
+
+    /* Estilos do Menu Lateral */
+    --sidebar-width: 280px;
+    --sidebar-bg: #e6f0fa; /* Fundo suave para a lateral */
+    --sidebar-active-bg: #cce0f5; /* Fundo para aula ativa */
+    --link-hover-bg: #dbe7f4;
+
+    /* COR DE STATUS DE TESTE */
+    --status-aprovado: #28a745;
+    --status-reprovado: #e63946;
+    --status-pendente: #ffc107;
+}
+
+/* VARIÁVEIS PARA MODO NOTURNO */
+body.dark-mode {
+    --bg: #1f2937;
+    --card: #374151;
+    --text-color: #f3f4f6;
+    --muted: #9ca3af;
+    --sidebar-bg: #374151;
+    --sidebar-active-bg: #4b5563;
+    --link-hover-bg: #4b5563;
+    --teste-bg-light: #374151; /* Darker card for test */
+    --teste-border-light: #4b5563;
+    --close-color: #d1d5db;
+}
+
+/* GERAL */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+h1, h2, h3 {
+    color: var(--text-color);
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, opacity 0.3s;
+    background-color: var(--primary);
+    color: white;
+    margin-top: 10px;
+}
+
+.btn:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+.btn:disabled {
+    background-color: var(--muted);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* ESTRUTURA PRINCIPAL */
+#container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* HEADER */
+header {
+    background-color: var(--primary);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.btn-header {
+    background: none;
+    border: 1px solid white;
+    color: white;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-header:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* SIDEBAR (MENU LATERAL) */
+#sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-bg);
+    padding: 20px 0;
+    flex-shrink: 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+    overflow-y: auto;
+    max-height: calc(100vh - 65px); /* Ajuste para caber abaixo do header sticky */
+    position: sticky;
+    top: 65px; /* Alinha com o header */
+}
+
+.menu-item {
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-left: 5px solid transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-item:hover {
+    background-color: var(--link-hover-bg);
+}
+
+.menu-item.active {
+    background-color: var(--sidebar-active-bg);
+    border-left-color: var(--primary);
+    font-weight: bold;
+}
+
+.menu-item.concluida {
+    color: var(--success);
+}
+
+.menu-item.concluida::after {
+    /* content: " ✓"; */
+    font-weight: bold;
+}
+
+.modulo-title {
+    font-weight: bold;
+    padding: 15px 20px 5px;
+    margin-top: 10px;
+    font-size: 1.1rem;
+}
+
+.modulo-1 { color: var(--primary); }
+.modulo-2 { color: var(--module2-color); }
+.modulo-3 { color: var(--module3-color); }
+
+.menu-item[data-modulo="1"].active { border-left-color: var(--primary); }
+.menu-item[data-modulo="2"].active { border-left-color: var(--module2-color); }
+.menu-item[data-modulo="3"].active { border-left-color: var(--module3-color); }
+
+.status-badge {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: white;
+    font-weight: normal;
+    margin-left: 10px;
+}
+
+.status-badge.aprovado { background-color: var(--status-aprovado); }
+.status-badge.reprovado { background-color: var(--status-reprovado); }
+.status-badge.pendente { background-color: var(--status-pendente); }
+
+
+/* CONTEÚDO PRINCIPAL (AULA) */
+#mainContent {
+    flex-grow: 1;
+    padding: 30px;
+    overflow-y: auto;
+}
+
+.aula-content h2 {
+    color: var(--primary);
+    border-bottom: 2px solid var(--link-hover-bg);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.aula-content p {
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.aula-content ul {
+    margin-bottom: 20px;
+}
+
+.aula-content li {
+    margin-bottom: 5px;
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+.video-placeholder {
+    width: 100%;
+    height: 350px;
+    background-color: var(--card);
+    border: 1px solid var(--muted);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    font-style: italic;
+    color: var(--muted);
+}
+
+/* NAVEGAÇÃO ENTRE AULAS */
+#navBotoes {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--link-hover-bg);
+}
+
+/* ESTILOS DOS TESTES */
+.teste-box {
+    background-color: var(--teste-bg-light);
+    border: 1px solid var(--teste-border-light);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.questao {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed var(--teste-border-light);
+}
+
+.questao h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+
+.resposta-opcao {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: var(--card);
+    border: 1px solid var(--teste-border-light);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.resposta-opcao:hover {
+    background-color: var(--link-hover-bg);
+}
+
+.resposta-opcao input[type="radio"] {
+    margin-right: 10px;
+}
+
+/* ESTILOS DO POPUP (Geral) - CORREÇÃO DE CENTRALIZAÇÃO */
+.popup-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex; /* GARANTE CENTRALIZAÇÃO */
+    justify-content: center; /* CENTRALIZA HORIZONTALMENTE */
+    align-items: center; /* CENTRALIZA VERTICALMENTE */
+    z-index: 1000;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--close-color);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: var(--danger);
+}
+
+/* Estilos para o popup de Inscrição (Certificado Menor) */
+.certificado-inscricao {
+    background-color: var(--card);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    color: var(--text-color);
+}
+
+.certificado-inscricao h1 {
+    color: var(--primary);
+    font-size: 2.5rem;
+    margin: 10px 0;
+}
+
+.certificado-inscricao h3 {
+    color: var(--text-color);
+    font-size: 1.8rem;
+    margin: 10px 0;
+    padding: 5px 10px;
+    border-bottom: 2px solid var(--primary);
+    display: inline-block;
+}
+
+/* Estilos para o popup de Conclusão (Certificado Maior) */
+.certificado-conclusao {
+    background-color: var(--card);
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 90%;
+    max-width: 800px;
+    position: relative;
+    color: var(--text-color);
+    border: 5px solid gold;
+    line-height: 1.5;
+}
+
+.certificado-conclusao .coroa {
+    font-size: 4rem;
+    color: gold;
+    margin-bottom: 10px;
+}
+
+.certificado-conclusao h1 {
+    font-size: 3rem;
+    color: var(--primary);
+    margin: 10px 0 20px 0;
+}
+
+.certificado-conclusao h2 {
+    color: var(--text-color);
+    font-size: 1.2rem;
+    border: none;
+    padding: 0;
+    margin-bottom: 5px;
+}
+
+.certificado-conclusao h3 {
+    font-size: 2rem;
+    color: #333; /* Use uma cor neutra ou primária */
+    margin: 15px 0 25px 0;
+    padding: 5px 10px;
+    border-bottom: 3px solid var(--accent);
+    display: inline-block;
+}
+
+.certificado-conclusao .texto-principal {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.certificado-conclusao #percentualAprovacao {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.certificado-conclusao .info-aluno {
+    display: flex;
+    justify-content: space-around;
+    margin: 30px 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.certificado-conclusao .assinaturas {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 40px;
+}
+
+.certificado-conclusao .assinatura-box {
+    text-align: center;
+    width: 40%;
+}
+
+.certificado-conclusao .assinatura-box img {
+    width: 150px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    opacity: 0.7;
+}
+
+.certificado-conclusao .assinatura-box hr {
+    border: none;
+    border-top: 1px solid var(--text-color);
+    margin: 5px 0;
+}
+
+.certificado-conclusao .qrcode-area {
+    margin-top: 30px;
+    font-size: 0.8rem;
+    color: var(--muted);
+    border: 1px dashed var(--muted);
+    padding: 10px;
+    display: inline-block;
+}
+
+/* MEDIA QUERIES para responsividade */
+@media (max-width: 768px) {
+    #sidebar {
+        width: 100%;
+        max-height: 250px;
+        position: static;
+        top: 0;
+    }
+
+    #container {
+        flex-direction: column;
+    }
+
+    #mainContent {
+        padding: 20px;
+    }
+
+    .certificado-inscricao {
+        padding: 30px;
+    }
+
+    .certificado-inscricao h1 {
+        font-size: 2rem;
+    }
+
+    .certificado-conclusao {
+        padding: 20px;
+        width: 95%;
+    }
+
+    .certificado-conclusao h1 {
+        font-size: 2rem;
+    }
+
+    .certificado-conclusao h3 {
+        font-size: 1.5rem;
+    }
+    
+    .certificado-conclusao .assinaturas {
+        flex-direction: column;
+        gap: 30px;
+    }
+    .certificado-conclusao .assinatura-box {
+        width: 100%;
+    }
+    
+    .certificado-conclusao .info-aluno {
+        flex-direction: column;
+        gap: 10px;
+        margin: 20px 0;
+    }
+}
+
+
+/* ESTILOS DE IMPRESSÃO (Para o Certificado PDF) */
+@media print {
+    /* Esconde tudo, exceto o popup de certificado de conclusão */
+    body > *:not(#certificadoConclusaoPopup) {
+        display: none !important;
+    }
+    
+    #certificadoConclusaoPopup {
+        position: static !important; 
+        display: block !important;
+        width: 100%;
+        height: auto;
+        background: none !important;
+        padding: 0 !important;
+        margin: 0 auto !important;
+        /* Garante que o certificado ocupe a maior parte da página impressa */
+    }
+
+    .certificado-conclusao {
+        width: 100%;
+        max-width: none;
+        box-shadow: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .certificado-conclusao .close-btn, 
+    .certificado-conclusao .btn {
+        display: none !important;
+    }
+}
